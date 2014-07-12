@@ -285,6 +285,15 @@ nav ul li a
 {
 	text-decoration: none;
 }
+
+/*.leo 
+{
+	display: block;
+	height: 100px;
+	background: red;
+	text-align: center;
+	line-height: 100px;
+}Con line-height se alinea verticalmente*/
 /*@media print
 {
 	body{
