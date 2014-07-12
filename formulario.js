@@ -1,28 +1,44 @@
-var $form = $('#formulario'), $titulo = $('#titulo'), $url = $('#url'),
-$button = $('#mostrar-form'), $list = $('#contenido'), $post = $('.item').first();
-
-function mostrarFormulario(){
-	$form.slideToggle()
-	return false;
+var $form = $('#formulario'), 
+	$titulo = $('#titulo'), 
+	$url = $('#url'),	
+	$lista = $('#contenido'), 
+	$primerPost = $('.item').first();
+	
+if(localStorage.getItem('autosave')){
+	$titulo.val(sessionStorage.getItem('titulo'));
+	$url.val(sessionStorage.getItem('url'))
 }
 
-function agregarPost(/*e*/){
-	//e.target ->Elemento que disparo el evento
+function mostrarOcultarFormulario(tito){
+	tito.preventDefault();
+	$form.slideToggle();
+	$lista.slideToggle();
+}
+
+var id = setInterval(function(){
+	sessionStorage.setItem('titulo',$titulo.val());
+	sessionStorage.setItem('url',$url.val());
+},1000)
+
+function agregarPost(e){
+	e.preventDefault();
 	var url = $url.val(), 
 		titulo = $titulo.val(),
-		$clone = $post.clone();//Representacion identica del objeto
+		$clone = $primerPost.clone();//Representacion identica del objeto
 	
-	$clone.find('.titulo_item a').text(titulo).attr('href',url);
+	$clone.find('.titulo_item a').
+		text(titulo).
+		attr('href',url);
 	
 	$clone.hide();	
 	
-	$list.prepend($clone); // Agregar un contenido de primero en el elemento
-	
-	$clone.fadeIn();
-	
-	return false;
+	$lista.prepend($clone); // Agregar un contenido de primero en el elemento
+	mostrarOcultarFormulario();
+	$titulo.val('');
+	$url.val('');
+	$clone.slideDown();
 }
 
 //Eventos
-$button.click(mostrarFormulario)
-$form.on('submit', agregarPost);
+$('#publicar_nav a').click(mostrarOcultarFormulario);
+$('#formulario').on('submit', agregarPost);
